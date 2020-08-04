@@ -1,5 +1,6 @@
 html {
-	scroll-behavior: smooth;
+	background-color: rgb(15, 19, 22);
+	color: white;
 }
 
 .links {

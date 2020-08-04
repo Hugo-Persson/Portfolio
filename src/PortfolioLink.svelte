@@ -17,11 +17,13 @@
     display: inline-block;
     width: 69%;
     text-align: center;
-    height: 2rem;
-    vertical-align: middle;
+    padding: 1em;
+    background-color: transparent;
+    border: solid white 1px;
+    border-radius: 0.3em;
   }
   a:hover {
-    background-color: gray;
+    background-color: rgb(26, 32, 36);
   }
 </style>
 
