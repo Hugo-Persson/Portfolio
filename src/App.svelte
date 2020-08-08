@@ -4,6 +4,8 @@
   import Skills from "./Skills.svelte";
   import * as animateScroll from "svelte-scrollto";
   import { quadOut } from "svelte/easing";
+  import ContactForm from "./ContactForm.svelte";
+
   let showPortfolio = true;
 
   animateScroll.setGlobalOptions({
@@ -11,9 +13,10 @@
   });
   function scrollDown() {
     //alert(window.orientation);
+    console.log("Scroll");
     animateScroll.scrollTo({
-      element: "nav",
-      offset: -10,
+      element: "main",
+
       duration: 300
     });
   }
@@ -22,12 +25,13 @@
 <style>
   header {
     background-image: url(./headerBackground.jpg);
-    height: 85vh;
+    height: 100vh;
     background-size: cover;
     color: white;
     position: relative;
     background-position: center;
   }
+
   @font-face {
     font-family: headerFont;
     src: url("Ailerons-Regular.otf");
@@ -38,7 +42,7 @@
     top: 1%;
     text-align: center;
     font-family: headerFont;
-    font-size: 5rem;
+    font-size: 5em;
   }
 
   @-webkit-keyframes pulse {
@@ -72,14 +76,12 @@
     }
   }
 
-  header i {
+  .scrollDown {
     font-size: 5rem;
     cursor: pointer;
     border-radius: 50%;
   }
-  main {
-    height: 200vh;
-  }
+
   #scrollDownContainer {
     position: absolute;
     top: 70%;
@@ -96,33 +98,34 @@
   nav button {
     padding: 0.5rem;
     width: 10rem;
-    backdrop-filter: blur(10px);
-    background-color: transparent;
-    color: white;
-    border: none;
-    cursor: pointer;
+
     font-weight: bold;
     font-size: 1.5rem;
-    border-radius: 0.3rem;
-
-    border: solid white 1px;
   }
   nav button::selection {
     color: none;
     background: none;
     border: none;
   }
+  main {
+    background-color: #1098f7 !important;
+    text-align: center;
+  }
 </style>
 
 <header>
   <h1>Mitt Portfolio</h1>
-  <div id="scrollDownContainer">
-    <i on:click={scrollDown} class="icofont-scroll-double-down" />
+  <div on:click={scrollDown} id="scrollDownContainer">
+    <i class="fad fa-chevron-double-down scrollDown" />
   </div>
-  <nav>
-    <button on:click={() => (showPortfolio = true)}>Portfolio</button>
-    <button on:click={() => (showPortfolio = false)}>Färdigheter</button>
-  </nav>
+  <!-- <nav>
+    <button class="button" on:click={() => (showPortfolio = true)}>
+      Portfolio
+    </button>
+    <button class="button" on:click={() => (showPortfolio = false)}>
+      Färdigheter
+    </button>
+  </nav> -->
 </header>
 <main id="main">
 
@@ -131,4 +134,6 @@
   {:else}
     <Skills />
   {/if}
+
 </main>
+<ContactForm />

@@ -3,30 +3,15 @@
 </script>
 
 <style>
-  li {
+  a {
     padding: 10px;
     width: 100%;
-    display: block;
+
     margin: 0;
-    width: 10rem;
-  }
-  a {
-    text-decoration: none;
-    color: white;
-    background-color: black;
-    display: inline-block;
-    width: 69%;
-    text-align: center;
-    padding: 1em;
-    background-color: transparent;
-    border: solid white 1px;
-    border-radius: 0.3em;
-  }
-  a:hover {
-    background-color: rgb(26, 32, 36);
+    width: 60%;
+    color: black;
+    border: solid black 1px;
   }
 </style>
 
-<li>
-  <a href={link.url}>{link.name}</a>
-</li>
+<a class="button " href={link.url}>{link.name}</a>
