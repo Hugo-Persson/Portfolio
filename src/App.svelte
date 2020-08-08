@@ -24,7 +24,7 @@
 
 <style>
   header {
-    background-image: url(./headerBackground.jpg);
+    background-image: url(./original.jpg);
     height: 100vh;
     background-size: cover;
     color: white;
@@ -45,41 +45,12 @@
     font-size: 5em;
   }
 
-  @-webkit-keyframes pulse {
-    0% {
-      -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-      background-color: rgba(255, 255, 255, 0.4);
-    }
-    70% {
-      -webkit-box-shadow: 0 0 0 25px rgba(255, 255, 255, 0);
-      background-color: rgba(255, 255, 255, 0);
-    }
-    100% {
-      -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
-  }
-  @keyframes pulse {
-    0% {
-      -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-      background-color: rgba(255, 255, 255, 0.4);
-    }
-    70% {
-      -moz-box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
-      box-shadow: 0 0 0 25px rgba(255, 255, 255, 0);
-
-      background-color: rgba(255, 255, 255, 0);
-    }
-    100% {
-      -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
-  }
-
   .scrollDown {
     font-size: 5rem;
     cursor: pointer;
     border-radius: 50%;
+    margin: 1rem;
+    font-style: italic;
   }
 
   #scrollDownContainer {
@@ -114,8 +85,10 @@
 </style>
 
 <header>
-  <h1>Mitt Portfolio</h1>
+  <h1>Hugo's Portfolio</h1>
   <div on:click={scrollDown} id="scrollDownContainer">
+    <span>Scroll down</span>
+    <br />
     <i class="fad fa-chevron-double-down scrollDown" />
   </div>
   <!-- <nav>

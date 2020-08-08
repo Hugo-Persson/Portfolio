@@ -422,7 +422,7 @@ var app = (function () {
     		c: function create() {
     			a = element("a");
     			t = text(t_value);
-    			attr_dev(a, "class", "button  svelte-13hwwca");
+    			attr_dev(a, "class", "button svelte-13hwwca");
     			attr_dev(a, "href", a_href_value = /*link*/ ctx[0].url);
     			add_location(a, file, 16, 0, 198);
     		},
@@ -1680,7 +1680,7 @@ spara alla användare och beställningar.
     const { console: console_1 } = globals;
     const file$3 = "src\\ContactForm.svelte";
 
-    // (130:0) {:else}
+    // (147:0) {:else}
     function create_else_block$1(ctx) {
     	let div1;
     	let div0;
@@ -1697,15 +1697,15 @@ spara alla användare och beställningar.
     			t1 = space();
     			button = element("button");
     			button.textContent = "Skapa nytt meddelande";
-    			attr_dev(h2, "class", "svelte-qpd3ys");
-    			add_location(h2, file$3, 132, 6, 2781);
-    			attr_dev(button, "class", "svelte-qpd3ys");
-    			add_location(button, file$3, 133, 6, 2812);
-    			attr_dev(div0, "class", "sheet svelte-qpd3ys");
-    			add_location(div0, file$3, 131, 4, 2754);
+    			attr_dev(h2, "class", "svelte-13fvthw");
+    			add_location(h2, file$3, 149, 6, 3114);
+    			attr_dev(button, "class", "svelte-13fvthw");
+    			add_location(button, file$3, 150, 6, 3145);
+    			attr_dev(div0, "class", "sheet svelte-13fvthw");
+    			add_location(div0, file$3, 148, 4, 3087);
     			attr_dev(div1, "id", "failWindow");
-    			attr_dev(div1, "class", "formResponse svelte-qpd3ys");
-    			add_location(div1, file$3, 130, 2, 2706);
+    			attr_dev(div1, "class", "formResponse svelte-13fvthw");
+    			add_location(div1, file$3, 147, 2, 3039);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -1724,14 +1724,14 @@ spara alla användare och beställningar.
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(130:0) {:else}",
+    		source: "(147:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (122:22) 
+    // (139:22) 
     function create_if_block_1(ctx) {
     	let div1;
     	let div0;
@@ -1750,15 +1750,15 @@ spara alla användare och beställningar.
     			t1 = space();
     			button = element("button");
     			button.textContent = "Skicka ett nytt meddelande";
-    			attr_dev(h2, "class", "svelte-qpd3ys");
-    			add_location(h2, file$3, 124, 6, 2555);
-    			attr_dev(button, "class", "svelte-qpd3ys");
-    			add_location(button, file$3, 125, 6, 2596);
-    			attr_dev(div0, "class", "sheet svelte-qpd3ys");
-    			add_location(div0, file$3, 123, 4, 2528);
+    			attr_dev(h2, "class", "svelte-13fvthw");
+    			add_location(h2, file$3, 141, 6, 2888);
+    			attr_dev(button, "class", "svelte-13fvthw");
+    			add_location(button, file$3, 142, 6, 2929);
+    			attr_dev(div0, "class", "sheet svelte-13fvthw");
+    			add_location(div0, file$3, 140, 4, 2861);
     			attr_dev(div1, "id", "successWindow");
-    			attr_dev(div1, "class", "formResponse svelte-qpd3ys");
-    			add_location(div1, file$3, 122, 2, 2477);
+    			attr_dev(div1, "class", "formResponse svelte-13fvthw");
+    			add_location(div1, file$3, 139, 2, 2810);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -1784,135 +1784,150 @@ spara alla användare och beställningar.
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(122:22) ",
+    		source: "(139:22) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (98:0) {#if window === 0}
+    // (106:0) {#if window === 0}
     function create_if_block$1(ctx) {
-    	let div4;
+    	let div7;
     	let form_1;
     	let h2;
     	let t1;
+    	let div1;
     	let div0;
     	let label0;
     	let t3;
     	let input0;
     	let t4;
-    	let div1;
+    	let div3;
+    	let div2;
     	let label1;
     	let t6;
     	let input1;
     	let t7;
-    	let div2;
+    	let div5;
+    	let div4;
     	let label2;
     	let t9;
     	let textarea;
     	let t10;
-    	let div3;
+    	let div6;
     	let button;
     	let mounted;
     	let dispose;
 
     	const block = {
     		c: function create() {
-    			div4 = element("div");
+    			div7 = element("div");
     			form_1 = element("form");
     			h2 = element("h2");
     			h2.textContent = "Kontakta mig";
     			t1 = space();
+    			div1 = element("div");
     			div0 = element("div");
     			label0 = element("label");
     			label0.textContent = "Namn:";
     			t3 = space();
     			input0 = element("input");
     			t4 = space();
-    			div1 = element("div");
+    			div3 = element("div");
+    			div2 = element("div");
     			label1 = element("label");
     			label1.textContent = "Email:";
     			t6 = space();
     			input1 = element("input");
     			t7 = space();
-    			div2 = element("div");
+    			div5 = element("div");
+    			div4 = element("div");
     			label2 = element("label");
     			label2.textContent = "Meddelande";
     			t9 = space();
     			textarea = element("textarea");
     			t10 = space();
-    			div3 = element("div");
+    			div6 = element("div");
     			button = element("button");
     			button.textContent = "Skicka";
-    			attr_dev(h2, "class", "svelte-qpd3ys");
-    			add_location(h2, file$3, 101, 6, 1898);
+    			attr_dev(h2, "class", "svelte-13fvthw");
+    			add_location(h2, file$3, 109, 6, 2057);
     			attr_dev(label0, "for", "name");
-    			attr_dev(label0, "class", "svelte-qpd3ys");
-    			add_location(label0, file$3, 103, 8, 1942);
+    			attr_dev(label0, "class", "svelte-13fvthw");
+    			add_location(label0, file$3, 112, 10, 2141);
+    			attr_dev(div0, "class", "innerContainer svelte-13fvthw");
+    			add_location(div0, file$3, 111, 8, 2101);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "name");
     			attr_dev(input0, "id", "name");
     			attr_dev(input0, "placeholder", "Namn");
-    			attr_dev(input0, "class", "svelte-qpd3ys");
-    			add_location(input0, file$3, 104, 8, 1983);
-    			attr_dev(div0, "class", "svelte-qpd3ys");
-    			add_location(div0, file$3, 102, 6, 1927);
+    			attr_dev(input0, "class", "svelte-13fvthw");
+    			add_location(input0, file$3, 115, 8, 2200);
+    			attr_dev(div1, "class", "svelte-13fvthw");
+    			add_location(div1, file$3, 110, 6, 2086);
     			attr_dev(label1, "for", "email");
-    			attr_dev(label1, "class", "svelte-qpd3ys");
-    			add_location(label1, file$3, 107, 8, 2082);
+    			attr_dev(label1, "class", "svelte-13fvthw");
+    			add_location(label1, file$3, 119, 10, 2339);
+    			attr_dev(div2, "class", "innerContainer svelte-13fvthw");
+    			add_location(div2, file$3, 118, 8, 2299);
     			attr_dev(input1, "type", "email");
     			attr_dev(input1, "name", "email");
     			attr_dev(input1, "id", "email");
     			attr_dev(input1, "placeholder", "Email");
-    			attr_dev(input1, "class", "svelte-qpd3ys");
-    			add_location(input1, file$3, 108, 8, 2125);
-    			attr_dev(div1, "class", "svelte-qpd3ys");
-    			add_location(div1, file$3, 106, 6, 2067);
+    			attr_dev(input1, "class", "svelte-13fvthw");
+    			add_location(input1, file$3, 122, 8, 2400);
+    			attr_dev(div3, "class", "svelte-13fvthw");
+    			add_location(div3, file$3, 117, 6, 2284);
     			attr_dev(label2, "for", "message");
-    			attr_dev(label2, "class", "svelte-qpd3ys");
-    			add_location(label2, file$3, 111, 8, 2245);
+    			attr_dev(label2, "class", "svelte-13fvthw");
+    			add_location(label2, file$3, 126, 10, 2560);
+    			attr_dev(div4, "class", "innerContainer svelte-13fvthw");
+    			add_location(div4, file$3, 125, 8, 2520);
     			attr_dev(textarea, "name", "message");
     			attr_dev(textarea, "id", "message");
-    			attr_dev(textarea, "class", "svelte-qpd3ys");
-    			add_location(textarea, file$3, 112, 8, 2294);
-    			attr_dev(div2, "id", "messageWrap");
-    			attr_dev(div2, "class", "svelte-qpd3ys");
-    			add_location(div2, file$3, 110, 6, 2213);
+    			attr_dev(textarea, "class", "svelte-13fvthw");
+    			add_location(textarea, file$3, 129, 8, 2627);
+    			attr_dev(div5, "id", "messageWrap");
+    			attr_dev(div5, "class", "svelte-13fvthw");
+    			add_location(div5, file$3, 124, 6, 2488);
     			attr_dev(button, "type", "submit");
-    			attr_dev(button, "class", "svelte-qpd3ys");
-    			add_location(button, file$3, 115, 8, 2371);
-    			attr_dev(div3, "class", "svelte-qpd3ys");
-    			add_location(div3, file$3, 114, 6, 2356);
+    			attr_dev(button, "class", "svelte-13fvthw");
+    			add_location(button, file$3, 132, 8, 2704);
+    			attr_dev(div6, "class", "svelte-13fvthw");
+    			add_location(div6, file$3, 131, 6, 2689);
     			attr_dev(form_1, "action", "");
-    			attr_dev(form_1, "class", "sheet svelte-qpd3ys");
-    			add_location(form_1, file$3, 100, 4, 1822);
-    			attr_dev(div4, "id", "formWrapper");
-    			attr_dev(div4, "class", "svelte-qpd3ys");
-    			add_location(div4, file$3, 98, 2, 1792);
+    			attr_dev(form_1, "class", "sheet svelte-13fvthw");
+    			add_location(form_1, file$3, 108, 4, 1981);
+    			attr_dev(div7, "id", "formWrapper");
+    			attr_dev(div7, "class", "svelte-13fvthw");
+    			add_location(div7, file$3, 106, 2, 1951);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div4, anchor);
-    			append_dev(div4, form_1);
+    			insert_dev(target, div7, anchor);
+    			append_dev(div7, form_1);
     			append_dev(form_1, h2);
     			append_dev(form_1, t1);
-    			append_dev(form_1, div0);
-    			append_dev(div0, label0);
-    			append_dev(div0, t3);
-    			append_dev(div0, input0);
-    			append_dev(form_1, t4);
     			append_dev(form_1, div1);
-    			append_dev(div1, label1);
-    			append_dev(div1, t6);
-    			append_dev(div1, input1);
-    			append_dev(form_1, t7);
-    			append_dev(form_1, div2);
-    			append_dev(div2, label2);
-    			append_dev(div2, t9);
-    			append_dev(div2, textarea);
-    			append_dev(form_1, t10);
+    			append_dev(div1, div0);
+    			append_dev(div0, label0);
+    			append_dev(div1, t3);
+    			append_dev(div1, input0);
+    			append_dev(form_1, t4);
     			append_dev(form_1, div3);
-    			append_dev(div3, button);
+    			append_dev(div3, div2);
+    			append_dev(div2, label1);
+    			append_dev(div3, t6);
+    			append_dev(div3, input1);
+    			append_dev(form_1, t7);
+    			append_dev(form_1, div5);
+    			append_dev(div5, div4);
+    			append_dev(div4, label2);
+    			append_dev(div5, t9);
+    			append_dev(div5, textarea);
+    			append_dev(form_1, t10);
+    			append_dev(form_1, div6);
+    			append_dev(div6, button);
     			/*form_1_binding*/ ctx[3](form_1);
 
     			if (!mounted) {
@@ -1922,7 +1937,7 @@ spara alla användare och beställningar.
     		},
     		p: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div4);
+    			if (detaching) detach_dev(div7);
     			/*form_1_binding*/ ctx[3](null);
     			mounted = false;
     			dispose();
@@ -1933,7 +1948,7 @@ spara alla användare och beställningar.
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(98:0) {#if window === 0}",
+    		source: "(106:0) {#if window === 0}",
     		ctx
     	});
 
@@ -2064,7 +2079,7 @@ spara alla användare och beställningar.
     const { console: console_1$1 } = globals;
     const file$4 = "src\\App.svelte";
 
-    // (134:2) {:else}
+    // (107:2) {:else}
     function create_else_block$2(ctx) {
     	let skills;
     	let current;
@@ -2096,14 +2111,14 @@ spara alla användare och beställningar.
     		block,
     		id: create_else_block$2.name,
     		type: "else",
-    		source: "(134:2) {:else}",
+    		source: "(107:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (132:2) {#if showPortfolio}
+    // (105:2) {#if showPortfolio}
     function create_if_block$2(ctx) {
     	let portfolio;
     	let current;
@@ -2135,7 +2150,7 @@ spara alla användare och beställningar.
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(132:2) {#if showPortfolio}",
+    		source: "(105:2) {#if showPortfolio}",
     		ctx
     	});
 
@@ -2147,12 +2162,16 @@ spara alla användare och beställningar.
     	let h1;
     	let t1;
     	let div;
+    	let span;
+    	let t3;
+    	let br;
+    	let t4;
     	let i;
-    	let t2;
+    	let t5;
     	let main;
     	let current_block_type_index;
     	let if_block;
-    	let t3;
+    	let t6;
     	let contactform;
     	let current;
     	let mounted;
@@ -2173,27 +2192,34 @@ spara alla användare och beställningar.
     		c: function create() {
     			header = element("header");
     			h1 = element("h1");
-    			h1.textContent = "Mitt Portfolio";
+    			h1.textContent = "Hugo's Portfolio";
     			t1 = space();
     			div = element("div");
+    			span = element("span");
+    			span.textContent = "Scroll down";
+    			t3 = space();
+    			br = element("br");
+    			t4 = space();
     			i = element("i");
-    			t2 = space();
+    			t5 = space();
     			main = element("main");
     			if_block.c();
-    			t3 = space();
+    			t6 = space();
     			create_component(contactform.$$.fragment);
-    			attr_dev(h1, "class", "svelte-7oojww");
-    			add_location(h1, file$4, 116, 2, 2427);
-    			attr_dev(i, "class", "fad fa-chevron-double-down scrollDown svelte-7oojww");
-    			add_location(i, file$4, 118, 4, 2510);
+    			attr_dev(h1, "class", "svelte-9muntl");
+    			add_location(h1, file$4, 87, 2, 1605);
+    			add_location(span, file$4, 89, 4, 1690);
+    			add_location(br, file$4, 90, 4, 1719);
+    			attr_dev(i, "class", "fad fa-chevron-double-down scrollDown svelte-9muntl");
+    			add_location(i, file$4, 91, 4, 1730);
     			attr_dev(div, "id", "scrollDownContainer");
-    			attr_dev(div, "class", "svelte-7oojww");
-    			add_location(div, file$4, 117, 2, 2453);
-    			attr_dev(header, "class", "svelte-7oojww");
-    			add_location(header, file$4, 115, 0, 2416);
+    			attr_dev(div, "class", "svelte-9muntl");
+    			add_location(div, file$4, 88, 2, 1633);
+    			attr_dev(header, "class", "svelte-9muntl");
+    			add_location(header, file$4, 86, 0, 1594);
     			attr_dev(main, "id", "main");
-    			attr_dev(main, "class", "svelte-7oojww");
-    			add_location(main, file$4, 129, 0, 2806);
+    			attr_dev(main, "class", "svelte-9muntl");
+    			add_location(main, file$4, 102, 0, 2026);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2203,11 +2229,15 @@ spara alla användare och beställningar.
     			append_dev(header, h1);
     			append_dev(header, t1);
     			append_dev(header, div);
+    			append_dev(div, span);
+    			append_dev(div, t3);
+    			append_dev(div, br);
+    			append_dev(div, t4);
     			append_dev(div, i);
-    			insert_dev(target, t2, anchor);
+    			insert_dev(target, t5, anchor);
     			insert_dev(target, main, anchor);
     			if_blocks[current_block_type_index].m(main, null);
-    			insert_dev(target, t3, anchor);
+    			insert_dev(target, t6, anchor);
     			mount_component(contactform, target, anchor);
     			current = true;
 
@@ -2230,10 +2260,10 @@ spara alla användare och beställningar.
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(header);
-    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(main);
     			if_blocks[current_block_type_index].d();
-    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(t6);
     			destroy_component(contactform, detaching);
     			mounted = false;
     			dispose();

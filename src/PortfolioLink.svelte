@@ -14,4 +14,4 @@
   }
 </style>
 
-<a class="button " href={link.url}>{link.name}</a>
+<a class="button" href={link.url}>{link.name}</a>

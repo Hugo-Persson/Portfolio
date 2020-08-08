@@ -39,24 +39,27 @@
     border-radius: 0.8rem;
     border: solid 1px black;
     padding: 1rem 0.5rem;
-    width: 100%;
-    margin: 0.5rem 0 1rem 0;
+    width: 96.5%;
+    margin: 0.5rem auto;
     font-size: 1.5em;
+    transition: width 0.5s;
   }
 
-  form div {
+  form > div {
     width: 95%;
     margin: auto;
+    text-align: center;
   }
 
   textarea {
-    width: 100%;
+    width: 96.5%;
     height: 100%;
   }
 
   input:focus,
   textarea:focus {
     outline: none;
+    width: 100%;
   }
   #messageWrap {
     height: 20%;
@@ -93,6 +96,11 @@
   .formResponse {
     text-align: center;
   }
+  .innerContainer {
+    text-align: left;
+    width: 96.5%;
+    margin: auto;
+  }
 </style>
 
 {#if window === 0}
@@ -101,15 +109,24 @@
     <form action="" class="sheet" bind:this={form} on:submit={sendForm}>
       <h2>Kontakta mig</h2>
       <div>
-        <label for="name">Namn:</label>
+        <div class="innerContainer">
+          <label for="name">Namn:</label>
+
+        </div>
         <input type="text" name="name" id="name" placeholder="Namn" />
       </div>
       <div>
-        <label for="email">Email:</label>
+        <div class="innerContainer">
+          <label for="email">Email:</label>
+        </div>
+
         <input type="email" name="email" id="email" placeholder="Email" />
       </div>
       <div id="messageWrap">
-        <label for="message">Meddelande</label>
+        <div class="innerContainer">
+          <label for="message">Meddelande</label>
+        </div>
+
         <textarea name="message" id="message" />
       </div>
       <div>

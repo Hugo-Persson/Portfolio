@@ -32,6 +32,21 @@ html {
 		"links description skills";
 }
 
+@media only screen and (max-width:1000px) {
+	.portfolioItemContainer {
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 4fr auto;
+		grid-template-areas:
+			"name name"
+			"description description"
+			"links skills";
+	}
+
+	.description {
+		border-bottom: solid black 1px;
+	}
+}
+
 .noDot {
 	list-style: none;
 }
@@ -65,7 +80,8 @@ body {
 }
 
 .button:hover {
-	background-color: rgb(26, 32, 36) !important;
+	background-color: #0f1316 !important;
+	color: white;
 }
 
 .gradientBorder::after {
