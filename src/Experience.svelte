@@ -26,7 +26,7 @@
 
 <div id="experienceBackround">
   <div id="wrap">
-    <h1>Erfaranheter</h1>
+    <h1>Erfarenheter</h1>
     <div class="sheet">
       <h2>Final i programmeringsolympiaden</h2>
     </div>
