@@ -94,12 +94,14 @@
 <header>
   <h1>Portfolio</h1>
   <span>
-    Hej, mitt namn är Hugo Persson och jag har haft programmering som en hobby i
-    flera år, jag har tidigare jobbat mot kund och skapat flera hobby projekt.
-    Nedan visar jag några av mina senaste projekt.
+    Mitt namn är Hugo Persson och jag har haft programmering som en hobby i
+    flera år samtidigt som jag har studerat på teknik programmet. Jag har
+    tidigare arbetat mot kund och skapat flera hobbyprojekt. Nedan visar jag
+    några av mina senaste projekt. För live demosidorna kommer första
+    inladdningen ta längre tid då sidan startas upp på heroku.
   </span>
   <div on:click={scrollDown} id="scrollDownContainer">
-    <span>Scroll down</span>
+    <span>Skrolla ner för exempel på projekt jag har gjort</span>
     <br />
     <i class="fad fa-chevron-double-down scrollDown" />
   </div>

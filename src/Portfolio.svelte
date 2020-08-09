@@ -13,7 +13,7 @@
           name: "Live Demo"
         }
       ],
-      name: "Industri beställning applikation",
+      name: "Industri beställningsapplikation",
       description: `<p>Denna webbapplikationen skapades på uppdrag av en kund, industripogrammet på kattegattgymnasiet, jag jobbade då på
       detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
       Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
@@ -74,9 +74,9 @@
           name: "Ladda ner APK"
         }
       ],
-      name: "Xamarin forms video streaming app",
+      name: "Xamarin forms video streamingapp",
       description: `<p>
-        Detta projektet är en mobil app jag skapade i Xamarin Forms, appen är en streaming app som förmedlar video från
+        Detta projektet är en mobilapp jag skapade i Xamarin Forms. Appen är en streamingapp som förmedlar video från
         Crunchyroll.com API.
         Jag skapade appen då jag kände att den crunchyroll appen som finns kan förbättras på flera sätt. För att testa appen
         kan ni ladda ner och installera APK filen
@@ -113,11 +113,11 @@
       name: "Torrent streaming applikation",
       description: `
         <p>
-            Denna webbapplikationen är gjord för att kunna streama en torrent på ett enkelt sätt. Applikation gör så att
+            Denna webbapplikation är gjord för att kunna streama en torrent på ett enkelt sätt. Applikationen gör att
             användaren inte behöver installera någon torrent programvara
             så som BitTorrent istället så gör servern det och streamar videon direkt till användaren. Detta gör en stor skillnad
             på mobila enheter där det kan vara komplicerat
-            att använda torrent program.
+            att använda torrentprogram.
         </p>
         <p>
             Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en media spelar så som

@@ -1442,7 +1442,7 @@ var app = (function () {
     					name: "Live Demo"
     				}
     			],
-    			name: "Industri beställning applikation",
+    			name: "Industri beställningsapplikation",
     			description: `<p>Denna webbapplikationen skapades på uppdrag av en kund, industripogrammet på kattegattgymnasiet, jag jobbade då på
       detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
       Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
@@ -1498,9 +1498,9 @@ var app = (function () {
     					name: "Ladda ner APK"
     				}
     			],
-    			name: "Xamarin forms video streaming app",
+    			name: "Xamarin forms video streamingapp",
     			description: `<p>
-        Detta projektet är en mobil app jag skapade i Xamarin Forms, appen är en streaming app som förmedlar video från
+        Detta projektet är en mobilapp jag skapade i Xamarin Forms. Appen är en streamingapp som förmedlar video från
         Crunchyroll.com API.
         Jag skapade appen då jag kände att den crunchyroll appen som finns kan förbättras på flera sätt. För att testa appen
         kan ni ladda ner och installera APK filen
@@ -1537,11 +1537,11 @@ var app = (function () {
     			name: "Torrent streaming applikation",
     			description: `
         <p>
-            Denna webbapplikationen är gjord för att kunna streama en torrent på ett enkelt sätt. Applikation gör så att
+            Denna webbapplikation är gjord för att kunna streama en torrent på ett enkelt sätt. Applikationen gör att
             användaren inte behöver installera någon torrent programvara
             så som BitTorrent istället så gör servern det och streamar videon direkt till användaren. Detta gör en stor skillnad
             på mobila enheter där det kan vara komplicerat
-            att använda torrent program.
+            att använda torrentprogram.
         </p>
         <p>
             Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en media spelar så som
@@ -1605,24 +1605,26 @@ var app = (function () {
     	let div0;
     	let h20;
     	let t3;
+    	let span;
+    	let t5;
     	let div1;
     	let h21;
-    	let t5;
+    	let t7;
     	let ul;
     	let li0;
-    	let t7;
-    	let li1;
     	let t9;
-    	let li2;
+    	let li1;
     	let t11;
-    	let li3;
+    	let li2;
     	let t13;
-    	let li4;
+    	let li3;
     	let t15;
-    	let li5;
+    	let li4;
     	let t17;
-    	let li6;
+    	let li5;
     	let t19;
+    	let li6;
+    	let t21;
     	let li7;
 
     	const block = {
@@ -1630,57 +1632,61 @@ var app = (function () {
     			div3 = element("div");
     			div2 = element("div");
     			h1 = element("h1");
-    			h1.textContent = "Erfaranheter";
+    			h1.textContent = "Erfarenheter";
     			t1 = space();
     			div0 = element("div");
     			h20 = element("h2");
-    			h20.textContent = "Final i programmeringsolympiaden";
+    			h20.textContent = "Finalist i programmeringsolympiaden 2020";
     			t3 = space();
+    			span = element("span");
+    			span.textContent = "Programmeringsolympiaden är Sveriges största gymnasietävling i\r\n        datorbaserad problemlösning. Finalen avgjordes på KTH i Stockholm våren\r\n        2020.";
+    			t5 = space();
     			div1 = element("div");
     			h21 = element("h2");
     			h21.textContent = "Kunskaper inom följande tekniker";
-    			t5 = space();
+    			t7 = space();
     			ul = element("ul");
     			li0 = element("li");
     			li0.textContent = "Svelte";
-    			t7 = space();
+    			t9 = space();
     			li1 = element("li");
     			li1.textContent = "JavaScript";
-    			t9 = space();
+    			t11 = space();
     			li2 = element("li");
     			li2.textContent = "React";
-    			t11 = space();
+    			t13 = space();
     			li3 = element("li");
     			li3.textContent = "C# - .NET miljön";
-    			t13 = space();
+    			t15 = space();
     			li4 = element("li");
     			li4.textContent = "MongoDB";
-    			t15 = space();
+    			t17 = space();
     			li5 = element("li");
     			li5.textContent = "MySQL";
-    			t17 = space();
+    			t19 = space();
     			li6 = element("li");
     			li6.textContent = "PHP";
-    			t19 = space();
+    			t21 = space();
     			li7 = element("li");
     			li7.textContent = "Python";
     			attr_dev(h1, "class", "svelte-ephsx5");
     			add_location(h1, file$3, 28, 4, 440);
     			add_location(h20, file$3, 30, 6, 494);
+    			add_location(span, file$3, 31, 6, 551);
     			attr_dev(div0, "class", "sheet svelte-ephsx5");
     			add_location(div0, file$3, 29, 4, 467);
-    			add_location(h21, file$3, 34, 6, 582);
-    			add_location(li0, file$3, 36, 8, 645);
-    			add_location(li1, file$3, 37, 8, 670);
-    			add_location(li2, file$3, 38, 8, 699);
-    			add_location(li3, file$3, 39, 8, 723);
-    			add_location(li4, file$3, 40, 8, 758);
-    			add_location(li5, file$3, 41, 8, 784);
-    			add_location(li6, file$3, 42, 8, 808);
-    			add_location(li7, file$3, 43, 8, 830);
-    			add_location(ul, file$3, 35, 6, 631);
+    			add_location(h21, file$3, 40, 6, 789);
+    			add_location(li0, file$3, 42, 8, 852);
+    			add_location(li1, file$3, 43, 8, 877);
+    			add_location(li2, file$3, 44, 8, 906);
+    			add_location(li3, file$3, 45, 8, 930);
+    			add_location(li4, file$3, 46, 8, 965);
+    			add_location(li5, file$3, 47, 8, 991);
+    			add_location(li6, file$3, 48, 8, 1015);
+    			add_location(li7, file$3, 49, 8, 1037);
+    			add_location(ul, file$3, 41, 6, 838);
     			attr_dev(div1, "class", "sheet svelte-ephsx5");
-    			add_location(div1, file$3, 33, 4, 555);
+    			add_location(div1, file$3, 39, 4, 762);
     			attr_dev(div2, "id", "wrap");
     			attr_dev(div2, "class", "svelte-ephsx5");
     			add_location(div2, file$3, 27, 2, 419);
@@ -1698,25 +1704,27 @@ var app = (function () {
     			append_dev(div2, t1);
     			append_dev(div2, div0);
     			append_dev(div0, h20);
-    			append_dev(div2, t3);
+    			append_dev(div0, t3);
+    			append_dev(div0, span);
+    			append_dev(div2, t5);
     			append_dev(div2, div1);
     			append_dev(div1, h21);
-    			append_dev(div1, t5);
+    			append_dev(div1, t7);
     			append_dev(div1, ul);
     			append_dev(ul, li0);
-    			append_dev(ul, t7);
-    			append_dev(ul, li1);
     			append_dev(ul, t9);
-    			append_dev(ul, li2);
+    			append_dev(ul, li1);
     			append_dev(ul, t11);
-    			append_dev(ul, li3);
+    			append_dev(ul, li2);
     			append_dev(ul, t13);
-    			append_dev(ul, li4);
+    			append_dev(ul, li3);
     			append_dev(ul, t15);
-    			append_dev(ul, li5);
+    			append_dev(ul, li4);
     			append_dev(ul, t17);
-    			append_dev(ul, li6);
+    			append_dev(ul, li5);
     			append_dev(ul, t19);
+    			append_dev(ul, li6);
+    			append_dev(ul, t21);
     			append_dev(ul, li7);
     		},
     		p: noop,
@@ -2776,11 +2784,11 @@ var app = (function () {
     			h1.textContent = "Portfolio";
     			t1 = space();
     			span0 = element("span");
-    			span0.textContent = "Hej, mitt namn är Hugo Persson och jag har haft programmering som en hobby i\n    flera år, jag har tidigare jobbat mot kund och skapat flera hobby projekt.\n    Nedan visar jag några av mina senaste projekt.";
+    			span0.textContent = "Mitt namn är Hugo Persson och jag har haft programmering som en hobby i\n    flera år samtidigt som jag har studerat på teknik programmet. Jag har\n    tidigare arbetat mot kund och skapat flera hobbyprojekt. Nedan visar jag\n    några av mina senaste projekt. För live demosidorna kommer första\n    inladdningen ta längre tid då sidan startas upp på heroku.";
     			t3 = space();
     			div = element("div");
     			span1 = element("span");
-    			span1.textContent = "Scroll down";
+    			span1.textContent = "Skrolla ner för exempel på projekt jag har gjort";
     			t5 = space();
     			br = element("br");
     			t6 = space();
@@ -2797,18 +2805,18 @@ var app = (function () {
     			attr_dev(span0, "class", "svelte-10nem3j");
     			add_location(span0, file$6, 95, 2, 1764);
     			attr_dev(span1, "class", "svelte-10nem3j");
-    			add_location(span1, file$6, 101, 4, 2051);
-    			add_location(br, file$6, 102, 4, 2080);
+    			add_location(span1, file$6, 103, 4, 2200);
+    			add_location(br, file$6, 104, 4, 2266);
     			attr_dev(i, "class", "fad fa-chevron-double-down scrollDown svelte-10nem3j");
-    			add_location(i, file$6, 103, 4, 2091);
+    			add_location(i, file$6, 105, 4, 2277);
     			attr_dev(div, "id", "scrollDownContainer");
     			attr_dev(div, "class", "svelte-10nem3j");
-    			add_location(div, file$6, 100, 2, 1994);
+    			add_location(div, file$6, 102, 2, 2143);
     			attr_dev(header, "class", "svelte-10nem3j");
     			add_location(header, file$6, 93, 0, 1732);
     			attr_dev(main, "id", "main");
     			attr_dev(main, "class", "svelte-10nem3j");
-    			add_location(main, file$6, 114, 0, 2387);
+    			add_location(main, file$6, 116, 0, 2573);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

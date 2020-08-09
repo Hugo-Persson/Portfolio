@@ -28,7 +28,13 @@
   <div id="wrap">
     <h1>Erfarenheter</h1>
     <div class="sheet">
-      <h2>Final i programmeringsolympiaden</h2>
+      <h2>Finalist i programmeringsolympiaden 2020</h2>
+      <span>
+        Programmeringsolympiaden är Sveriges största gymnasietävling i
+        datorbaserad problemlösning. Finalen avgjordes på KTH i Stockholm våren
+        2020.
+      </span>
+
     </div>
 
     <div class="sheet">
