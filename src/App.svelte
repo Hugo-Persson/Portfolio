@@ -44,12 +44,19 @@
     font-family: headerFont;
     font-size: 5em;
   }
-
+  header span {
+    position: absolute;
+    width: 60%;
+    margin: auto;
+    left: 20%;
+    top: 20%;
+    text-align: center;
+  }
   .scrollDown {
     font-size: 5rem;
     cursor: pointer;
     border-radius: 50%;
-    margin: 1rem;
+    margin: 2rem;
     font-style: italic;
   }
 
@@ -85,7 +92,12 @@
 </style>
 
 <header>
-  <h1>Hugo's Portfolio</h1>
+  <h1>Portfolio</h1>
+  <span>
+    Hej, mitt namn är Hugo Persson och jag har haft programmering som en hobby i
+    flera år, jag har tidigare jobbat mot kund och skapat flera hobby projekt.
+    Nedan visar jag några av mina senaste projekt.
+  </span>
   <div on:click={scrollDown} id="scrollDownContainer">
     <span>Scroll down</span>
     <br />

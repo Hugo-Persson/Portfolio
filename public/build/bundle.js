@@ -4,6 +4,7 @@ var app = (function () {
     'use strict';
 
     function noop() { }
+    const identity = x => x;
     function add_location(element, file, line, column, char) {
         element.__svelte_meta = {
             loc: { file, line, column, char }
@@ -106,6 +107,67 @@ var app = (function () {
         return e;
     }
 
+    const active_docs = new Set();
+    let active = 0;
+    // https://github.com/darkskyapp/string-hash/blob/master/index.js
+    function hash(str) {
+        let hash = 5381;
+        let i = str.length;
+        while (i--)
+            hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+        return hash >>> 0;
+    }
+    function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+        const step = 16.666 / duration;
+        let keyframes = '{\n';
+        for (let p = 0; p <= 1; p += step) {
+            const t = a + (b - a) * ease(p);
+            keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+        }
+        const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+        const name = `__svelte_${hash(rule)}_${uid}`;
+        const doc = node.ownerDocument;
+        active_docs.add(doc);
+        const stylesheet = doc.__svelte_stylesheet || (doc.__svelte_stylesheet = doc.head.appendChild(element('style')).sheet);
+        const current_rules = doc.__svelte_rules || (doc.__svelte_rules = {});
+        if (!current_rules[name]) {
+            current_rules[name] = true;
+            stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+        }
+        const animation = node.style.animation || '';
+        node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
+        active += 1;
+        return name;
+    }
+    function delete_rule(node, name) {
+        const previous = (node.style.animation || '').split(', ');
+        const next = previous.filter(name
+            ? anim => anim.indexOf(name) < 0 // remove specific animation
+            : anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+        );
+        const deleted = previous.length - next.length;
+        if (deleted) {
+            node.style.animation = next.join(', ');
+            active -= deleted;
+            if (!active)
+                clear_rules();
+        }
+    }
+    function clear_rules() {
+        raf(() => {
+            if (active)
+                return;
+            active_docs.forEach(doc => {
+                const stylesheet = doc.__svelte_stylesheet;
+                let i = stylesheet.cssRules.length;
+                while (i--)
+                    stylesheet.deleteRule(i);
+                doc.__svelte_rules = {};
+            });
+            active_docs.clear();
+        });
+    }
+
     let current_component;
     function set_current_component(component) {
         current_component = component;
@@ -173,6 +235,20 @@ var app = (function () {
             $$.after_update.forEach(add_render_callback);
         }
     }
+
+    let promise;
+    function wait() {
+        if (!promise) {
+            promise = Promise.resolve();
+            promise.then(() => {
+                promise = null;
+            });
+        }
+        return promise;
+    }
+    function dispatch(node, direction, kind) {
+        node.dispatchEvent(custom_event(`${direction ? 'intro' : 'outro'}${kind}`));
+    }
     const outroing = new Set();
     let outros;
     function group_outros() {
@@ -209,6 +285,112 @@ var app = (function () {
             });
             block.o(local);
         }
+    }
+    const null_transition = { duration: 0 };
+    function create_bidirectional_transition(node, fn, params, intro) {
+        let config = fn(node, params);
+        let t = intro ? 0 : 1;
+        let running_program = null;
+        let pending_program = null;
+        let animation_name = null;
+        function clear_animation() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function init(program, duration) {
+            const d = program.b - t;
+            duration *= Math.abs(d);
+            return {
+                a: t,
+                b: program.b,
+                d,
+                duration,
+                start: program.start,
+                end: program.start + duration,
+                group: program.group
+            };
+        }
+        function go(b) {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            const program = {
+                start: now() + delay,
+                b
+            };
+            if (!b) {
+                // @ts-ignore todo: improve typings
+                program.group = outros;
+                outros.r += 1;
+            }
+            if (running_program) {
+                pending_program = program;
+            }
+            else {
+                // if this is an intro, and there's a delay, we need to do
+                // an initial tick and/or apply CSS animation immediately
+                if (css) {
+                    clear_animation();
+                    animation_name = create_rule(node, t, b, duration, delay, easing, css);
+                }
+                if (b)
+                    tick(0, 1);
+                running_program = init(program, duration);
+                add_render_callback(() => dispatch(node, b, 'start'));
+                loop(now => {
+                    if (pending_program && now > pending_program.start) {
+                        running_program = init(pending_program, duration);
+                        pending_program = null;
+                        dispatch(node, running_program.b, 'start');
+                        if (css) {
+                            clear_animation();
+                            animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
+                        }
+                    }
+                    if (running_program) {
+                        if (now >= running_program.end) {
+                            tick(t = running_program.b, 1 - t);
+                            dispatch(node, running_program.b, 'end');
+                            if (!pending_program) {
+                                // we're done
+                                if (running_program.b) {
+                                    // intro — we can tidy up immediately
+                                    clear_animation();
+                                }
+                                else {
+                                    // outro — needs to be coordinated
+                                    if (!--running_program.group.r)
+                                        run_all(running_program.group.c);
+                                }
+                            }
+                            running_program = null;
+                        }
+                        else if (now >= running_program.start) {
+                            const p = now - running_program.start;
+                            t = running_program.a + running_program.d * easing(p / running_program.duration);
+                            tick(t, 1 - t);
+                        }
+                    }
+                    return !!(running_program || pending_program);
+                });
+            }
+        }
+        return {
+            run(b) {
+                if (is_function(config)) {
+                    wait().then(() => {
+                        // @ts-ignore
+                        config = config();
+                        go(b);
+                    });
+                }
+                else {
+                    go(b);
+                }
+            },
+            end() {
+                clear_animation();
+                running_program = pending_program = null;
+            }
+        };
     }
 
     const globals = (typeof window !== 'undefined'
@@ -1105,7 +1287,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (89:0) {#each portfolioData as item}
+    // (151:0) {#each portfolioData as item}
     function create_each_block$1(ctx) {
     	let portfolioitem;
     	let current;
@@ -1142,7 +1324,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(89:0) {#each portfolioData as item}",
+    		source: "(151:0) {#each portfolioData as item}",
     		ctx
     	});
 
@@ -1262,25 +1444,25 @@ var app = (function () {
     			],
     			name: "Industri beställning applikation",
     			description: `<p>Denna webbapplikationen skapades på uppdrag av en kund, industripogrammet på kattegattgymnasiet, jag jobbade då på
-    detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
-    Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
-    beställningar och hantera dem,
-    varje beställning har en status och kontaktuppgifter som kunden kan se och admins kan uppdatera</p <p>
+      detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
+      Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
+      beställningar och hantera dem,
+      varje beställning har en status och kontaktuppgifter som kunden kan se och admins kan uppdatera</p <p>
 
-Backend är byggt med NodeJS med Express och frontend är byggt med hjälp av Svelte och Bootstrap. För inloggning använder
-jag mig av passwordless istället för
-det normala systemet med ett användarnamn + lösenord. Passwordless bygger på att inga konton har lösenord, istället så
-skickas en verifikations kod till användarna
-när de loggar in. Jag valde passwordless då det skapar större säkerhet för kunden. Jag använde mig av MongoDB för att
-spara alla användare och beställningar.
+      Backend är byggt med NodeJS med Express och frontend är byggt med hjälp av Svelte och Bootstrap. För inloggning använder
+      jag mig av passwordless istället för
+      det normala systemet med ett användarnamn + lösenord. Passwordless bygger på att inga konton har lösenord, istället så
+      skickas en verifikations kod till användarna
+      när de loggar in. Jag valde passwordless då det skapar större säkerhet för kunden. Jag använde mig av MongoDB för att
+      spara alla användare och beställningar.
 
-</p>
-<p>
-    För att se sidan kan ni klicka på live demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
-    skapa ett konto, om ni vill se adminsidan
-    kan ni använda e-mailen "adminSiteDemo@example.com", detta kontot har behöver inte verifieras med en kod för demo
-    verisionen av sidan.
-</p>`,
+      </p>
+      <p>
+          För att se sidan kan ni klicka på live demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
+          skapa ett konto, om ni vill se adminsidan
+          kan ni använda e-mailen "adminSiteDemo@example.com", detta kontot har behöver inte verifieras med en kod för demo
+          verisionen av sidan.
+      </p>`,
     			skills: [
     				{
     					name: "JavaScript",
@@ -1310,10 +1492,26 @@ spara alla användare och beställningar.
     				{
     					url: "https://github.com/Hugo-Persson/CrunchyrollPlusXamarin",
     					name: "Source code"
+    				},
+    				{
+    					url: "https://drive.google.com/file/d/1XqmtVD6bfMzROGm3Jfsyvl9DcgNA6dmr/view?usp=sharing",
+    					name: "Ladda ner APK"
     				}
     			],
-    			name: "Xamarin forms streaming app",
-    			description: "Esse mollit exercitation esse amet nostrud amet ex mollit non. Consequat anim in ex eu laboris et officia.Irure proident nostrud sunt fugiat est officia eu sit mollit. Mollit aliquip ipsum dolor culpa. Occaecat velit proident aliqua culpa eu elit ad velit pariatur aliquip. Elit sint tempor quis reprehenderit magna elit amet aute laboris. In dolore nostrud cupidatat nisi id laboris esse nulla et quis non. Excepteur ullamco quis sint excepteur esse veniam Lorem nisi cupidatat. Sit nostrud adipisicing in cillum velit. Ad ex dolor nostrud mollit. Est dolor amet consequat officia. Eu qui dolore mollit reprehenderit commodo mollit ex dolor tempor sunt proident. Tempor veniam sint nostrud dolore exercitation nostrud est laboris minim quis nulla. Duis anim tempor aute nulla velit duis voluptate voluptate anim sit cupidatat esse cupidatat.",
+    			name: "Xamarin forms video streaming app",
+    			description: `<p>
+        Detta projektet är en mobil app jag skapade i Xamarin Forms, appen är en streaming app som förmedlar video från
+        Crunchyroll.com API.
+        Jag skapade appen då jag kände att den crunchyroll appen som finns kan förbättras på flera sätt. För att testa appen
+        kan ni ladda ner och installera APK filen
+        eller clona git repositoryt och bygga projektet. Appen fungerar både på Android och IOS men det är inte publicerad
+        på App Store eller Play Store så för att testa
+        appen för IOS måste ni bygga projektet till er IOS enhet.
+
+
+
+
+        </p>`,
     			skills: [
     				{
     					name: "C#",
@@ -1322,6 +1520,48 @@ spara alla användare och beställningar.
     				{
     					name: "Xamarin Forms",
     					icon: "xamarin_logo.png"
+    				}
+    			]
+    		},
+    		{
+    			links: [
+    				{
+    					url: "https://github.com/Hugo-Persson/OnePaceStreamer",
+    					name: "Source code"
+    				},
+    				{
+    					url: "https://one-pace-stream.herokuapp.com/",
+    					name: "Live Demo"
+    				}
+    			],
+    			name: "Torrent streaming applikation",
+    			description: `
+        <p>
+            Denna webbapplikationen är gjord för att kunna streama en torrent på ett enkelt sätt. Applikation gör så att
+            användaren inte behöver installera någon torrent programvara
+            så som BitTorrent istället så gör servern det och streamar videon direkt till användaren. Detta gör en stor skillnad
+            på mobila enheter där det kan vara komplicerat
+            att använda torrent program.
+        </p>
+        <p>
+            Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en media spelar så som
+            VLC kan stream direkt. Du skulle även
+            kunna streama median direkt i webbläsaren men filformatet är .mkv vilket webbläsarna inte stödjer.
+
+        </p>`,
+    			skills: [
+    				{
+    					name: "JavaScript",
+    					icon: "devicon-javascript-plain colored"
+    				},
+    				{ name: "Svelte", icon: "/svelte.png" },
+    				{
+    					name: "NodeJS",
+    					icon: "devicon-nodejs-plain colored"
+    				},
+    				{
+    					name: "Express",
+    					icon: "devicon-express-original colored"
     				}
     			]
     		}
@@ -1675,18 +1915,30 @@ spara alla användare och beställningar.
         scrolltobottom: scrolltobottom
     });
 
+    function fade(node, { delay = 0, duration = 400, easing = identity }) {
+        const o = +getComputedStyle(node).opacity;
+        return {
+            delay,
+            duration,
+            easing,
+            css: t => `opacity: ${t * o}`
+        };
+    }
+
     /* src\ContactForm.svelte generated by Svelte v3.24.0 */
 
     const { console: console_1 } = globals;
     const file$3 = "src\\ContactForm.svelte";
 
-    // (147:0) {:else}
+    // (148:0) {:else}
     function create_else_block$1(ctx) {
     	let div1;
     	let div0;
     	let h2;
     	let t1;
     	let button;
+    	let div1_transition;
+    	let current;
 
     	const block = {
     		c: function create() {
@@ -1698,14 +1950,14 @@ spara alla användare och beställningar.
     			button = element("button");
     			button.textContent = "Skapa nytt meddelande";
     			attr_dev(h2, "class", "svelte-13fvthw");
-    			add_location(h2, file$3, 149, 6, 3114);
+    			add_location(h2, file$3, 150, 6, 3207);
     			attr_dev(button, "class", "svelte-13fvthw");
-    			add_location(button, file$3, 150, 6, 3145);
+    			add_location(button, file$3, 151, 6, 3238);
     			attr_dev(div0, "class", "sheet svelte-13fvthw");
-    			add_location(div0, file$3, 148, 4, 3087);
+    			add_location(div0, file$3, 149, 4, 3180);
     			attr_dev(div1, "id", "failWindow");
     			attr_dev(div1, "class", "formResponse svelte-13fvthw");
-    			add_location(div1, file$3, 147, 2, 3039);
+    			add_location(div1, file$3, 148, 2, 3116);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -1713,10 +1965,27 @@ spara alla användare och beställningar.
     			append_dev(div0, h2);
     			append_dev(div0, t1);
     			append_dev(div0, button);
+    			current = true;
     		},
     		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fade, {}, true);
+    				div1_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fade, {}, false);
+    			div1_transition.run(0);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
+    			if (detaching && div1_transition) div1_transition.end();
     		}
     	};
 
@@ -1724,20 +1993,22 @@ spara alla användare och beställningar.
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(147:0) {:else}",
+    		source: "(148:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (139:22) 
+    // (140:22) 
     function create_if_block_1(ctx) {
     	let div1;
     	let div0;
     	let h2;
     	let t1;
     	let button;
+    	let div1_transition;
+    	let current;
     	let mounted;
     	let dispose;
 
@@ -1751,14 +2022,14 @@ spara alla användare och beställningar.
     			button = element("button");
     			button.textContent = "Skicka ett nytt meddelande";
     			attr_dev(h2, "class", "svelte-13fvthw");
-    			add_location(h2, file$3, 141, 6, 2888);
+    			add_location(h2, file$3, 142, 6, 2965);
     			attr_dev(button, "class", "svelte-13fvthw");
-    			add_location(button, file$3, 142, 6, 2929);
+    			add_location(button, file$3, 143, 6, 3006);
     			attr_dev(div0, "class", "sheet svelte-13fvthw");
-    			add_location(div0, file$3, 140, 4, 2861);
+    			add_location(div0, file$3, 141, 4, 2938);
     			attr_dev(div1, "id", "successWindow");
     			attr_dev(div1, "class", "formResponse svelte-13fvthw");
-    			add_location(div1, file$3, 139, 2, 2810);
+    			add_location(div1, file$3, 140, 2, 2871);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -1766,6 +2037,7 @@ spara alla användare och beställningar.
     			append_dev(div0, h2);
     			append_dev(div0, t1);
     			append_dev(div0, button);
+    			current = true;
 
     			if (!mounted) {
     				dispose = listen_dev(button, "click", /*click_handler*/ ctx[4], false, false, false);
@@ -1773,8 +2045,24 @@ spara alla användare och beställningar.
     			}
     		},
     		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fade, {}, true);
+    				div1_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fade, {}, false);
+    			div1_transition.run(0);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
+    			if (detaching && div1_transition) div1_transition.end();
     			mounted = false;
     			dispose();
     		}
@@ -1784,14 +2072,14 @@ spara alla användare och beställningar.
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(139:22) ",
+    		source: "(140:22) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (106:0) {#if window === 0}
+    // (107:0) {#if window === 0}
     function create_if_block$1(ctx) {
     	let div7;
     	let form_1;
@@ -1817,6 +2105,8 @@ spara alla användare och beställningar.
     	let t10;
     	let div6;
     	let button;
+    	let div7_transition;
+    	let current;
     	let mounted;
     	let dispose;
 
@@ -1852,56 +2142,56 @@ spara alla användare och beställningar.
     			button = element("button");
     			button.textContent = "Skicka";
     			attr_dev(h2, "class", "svelte-13fvthw");
-    			add_location(h2, file$3, 109, 6, 2057);
+    			add_location(h2, file$3, 110, 6, 2118);
     			attr_dev(label0, "for", "name");
     			attr_dev(label0, "class", "svelte-13fvthw");
-    			add_location(label0, file$3, 112, 10, 2141);
+    			add_location(label0, file$3, 113, 10, 2202);
     			attr_dev(div0, "class", "innerContainer svelte-13fvthw");
-    			add_location(div0, file$3, 111, 8, 2101);
+    			add_location(div0, file$3, 112, 8, 2162);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "name");
     			attr_dev(input0, "id", "name");
     			attr_dev(input0, "placeholder", "Namn");
     			attr_dev(input0, "class", "svelte-13fvthw");
-    			add_location(input0, file$3, 115, 8, 2200);
+    			add_location(input0, file$3, 116, 8, 2261);
     			attr_dev(div1, "class", "svelte-13fvthw");
-    			add_location(div1, file$3, 110, 6, 2086);
+    			add_location(div1, file$3, 111, 6, 2147);
     			attr_dev(label1, "for", "email");
     			attr_dev(label1, "class", "svelte-13fvthw");
-    			add_location(label1, file$3, 119, 10, 2339);
+    			add_location(label1, file$3, 120, 10, 2400);
     			attr_dev(div2, "class", "innerContainer svelte-13fvthw");
-    			add_location(div2, file$3, 118, 8, 2299);
+    			add_location(div2, file$3, 119, 8, 2360);
     			attr_dev(input1, "type", "email");
     			attr_dev(input1, "name", "email");
     			attr_dev(input1, "id", "email");
     			attr_dev(input1, "placeholder", "Email");
     			attr_dev(input1, "class", "svelte-13fvthw");
-    			add_location(input1, file$3, 122, 8, 2400);
+    			add_location(input1, file$3, 123, 8, 2461);
     			attr_dev(div3, "class", "svelte-13fvthw");
-    			add_location(div3, file$3, 117, 6, 2284);
+    			add_location(div3, file$3, 118, 6, 2345);
     			attr_dev(label2, "for", "message");
     			attr_dev(label2, "class", "svelte-13fvthw");
-    			add_location(label2, file$3, 126, 10, 2560);
+    			add_location(label2, file$3, 127, 10, 2621);
     			attr_dev(div4, "class", "innerContainer svelte-13fvthw");
-    			add_location(div4, file$3, 125, 8, 2520);
+    			add_location(div4, file$3, 126, 8, 2581);
     			attr_dev(textarea, "name", "message");
     			attr_dev(textarea, "id", "message");
     			attr_dev(textarea, "class", "svelte-13fvthw");
-    			add_location(textarea, file$3, 129, 8, 2627);
+    			add_location(textarea, file$3, 130, 8, 2688);
     			attr_dev(div5, "id", "messageWrap");
     			attr_dev(div5, "class", "svelte-13fvthw");
-    			add_location(div5, file$3, 124, 6, 2488);
+    			add_location(div5, file$3, 125, 6, 2549);
     			attr_dev(button, "type", "submit");
     			attr_dev(button, "class", "svelte-13fvthw");
-    			add_location(button, file$3, 132, 8, 2704);
+    			add_location(button, file$3, 133, 8, 2765);
     			attr_dev(div6, "class", "svelte-13fvthw");
-    			add_location(div6, file$3, 131, 6, 2689);
+    			add_location(div6, file$3, 132, 6, 2750);
     			attr_dev(form_1, "action", "");
     			attr_dev(form_1, "class", "sheet svelte-13fvthw");
-    			add_location(form_1, file$3, 108, 4, 1981);
+    			add_location(form_1, file$3, 109, 4, 2042);
     			attr_dev(div7, "id", "formWrapper");
     			attr_dev(div7, "class", "svelte-13fvthw");
-    			add_location(div7, file$3, 106, 2, 1951);
+    			add_location(div7, file$3, 107, 2, 1996);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div7, anchor);
@@ -1929,6 +2219,7 @@ spara alla användare och beställningar.
     			append_dev(form_1, div6);
     			append_dev(div6, button);
     			/*form_1_binding*/ ctx[3](form_1);
+    			current = true;
 
     			if (!mounted) {
     				dispose = listen_dev(form_1, "submit", /*sendForm*/ ctx[2], false, false, false);
@@ -1936,9 +2227,25 @@ spara alla användare och beställningar.
     			}
     		},
     		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!div7_transition) div7_transition = create_bidirectional_transition(div7, fade, {}, true);
+    				div7_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!div7_transition) div7_transition = create_bidirectional_transition(div7, fade, {}, false);
+    			div7_transition.run(0);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div7);
     			/*form_1_binding*/ ctx[3](null);
+    			if (detaching && div7_transition) div7_transition.end();
     			mounted = false;
     			dispose();
     		}
@@ -1948,7 +2255,7 @@ spara alla användare och beställningar.
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(106:0) {#if window === 0}",
+    		source: "(107:0) {#if window === 0}",
     		ctx
     	});
 
@@ -1956,16 +2263,21 @@ spara alla användare och beställningar.
     }
 
     function create_fragment$5(ctx) {
+    	let current_block_type_index;
+    	let if_block;
     	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block$1, create_if_block_1, create_else_block$1];
+    	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
-    		if (/*window*/ ctx[1] === 0) return create_if_block$1;
-    		if (/*window*/ ctx[1] == 1) return create_if_block_1;
-    		return create_else_block$1;
+    		if (/*window*/ ctx[1] === 0) return 0;
+    		if (/*window*/ ctx[1] == 1) return 1;
+    		return 2;
     	}
 
-    	let current_block_type = select_block_type(ctx);
-    	let if_block = current_block_type(ctx);
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
     	const block = {
     		c: function create() {
@@ -1976,26 +2288,46 @@ spara alla användare och beställningar.
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			if_block.m(target, anchor);
+    			if_blocks[current_block_type_index].m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
-    				if_block.p(ctx, dirty);
-    			} else {
-    				if_block.d(1);
-    				if_block = current_block_type(ctx);
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
 
-    				if (if_block) {
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
     					if_block.c();
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
     			}
     		},
-    		i: noop,
-    		o: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
-    			if_block.d(detaching);
+    			if_blocks[current_block_type_index].d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
     		}
     	};
@@ -2046,7 +2378,7 @@ spara alla användare och beställningar.
     	}
 
     	const click_handler = () => $$invalidate(1, window = 0);
-    	$$self.$capture_state = () => ({ form, sendForm, window });
+    	$$self.$capture_state = () => ({ fade, form, sendForm, window });
 
     	$$self.$inject_state = $$props => {
     		if ("form" in $$props) $$invalidate(0, form = $$props.form);
@@ -2079,7 +2411,7 @@ spara alla användare och beställningar.
     const { console: console_1$1 } = globals;
     const file$4 = "src\\App.svelte";
 
-    // (107:2) {:else}
+    // (119:2) {:else}
     function create_else_block$2(ctx) {
     	let skills;
     	let current;
@@ -2111,14 +2443,14 @@ spara alla användare och beställningar.
     		block,
     		id: create_else_block$2.name,
     		type: "else",
-    		source: "(107:2) {:else}",
+    		source: "(119:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (105:2) {#if showPortfolio}
+    // (117:2) {#if showPortfolio}
     function create_if_block$2(ctx) {
     	let portfolio;
     	let current;
@@ -2150,7 +2482,7 @@ spara alla användare och beställningar.
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(105:2) {#if showPortfolio}",
+    		source: "(117:2) {#if showPortfolio}",
     		ctx
     	});
 
@@ -2161,17 +2493,19 @@ spara alla användare och beställningar.
     	let header;
     	let h1;
     	let t1;
-    	let div;
-    	let span;
+    	let span0;
     	let t3;
-    	let br;
-    	let t4;
-    	let i;
+    	let div;
+    	let span1;
     	let t5;
+    	let br;
+    	let t6;
+    	let i;
+    	let t7;
     	let main;
     	let current_block_type_index;
     	let if_block;
-    	let t6;
+    	let t8;
     	let contactform;
     	let current;
     	let mounted;
@@ -2192,34 +2526,40 @@ spara alla användare och beställningar.
     		c: function create() {
     			header = element("header");
     			h1 = element("h1");
-    			h1.textContent = "Hugo's Portfolio";
+    			h1.textContent = "Portfolio";
     			t1 = space();
-    			div = element("div");
-    			span = element("span");
-    			span.textContent = "Scroll down";
+    			span0 = element("span");
+    			span0.textContent = "Hej, mitt namn är Hugo Persson och jag har haft programmering som en hobby i\n    flera år, jag har tidigare jobbat mot kund och skapat flera hobby projekt.\n    Nedan visar jag några av mina senaste projekt.";
     			t3 = space();
-    			br = element("br");
-    			t4 = space();
-    			i = element("i");
+    			div = element("div");
+    			span1 = element("span");
+    			span1.textContent = "Scroll down";
     			t5 = space();
+    			br = element("br");
+    			t6 = space();
+    			i = element("i");
+    			t7 = space();
     			main = element("main");
     			if_block.c();
-    			t6 = space();
+    			t8 = space();
     			create_component(contactform.$$.fragment);
-    			attr_dev(h1, "class", "svelte-9muntl");
-    			add_location(h1, file$4, 87, 2, 1605);
-    			add_location(span, file$4, 89, 4, 1690);
-    			add_location(br, file$4, 90, 4, 1719);
-    			attr_dev(i, "class", "fad fa-chevron-double-down scrollDown svelte-9muntl");
-    			add_location(i, file$4, 91, 4, 1730);
+    			attr_dev(h1, "class", "svelte-10nem3j");
+    			add_location(h1, file$4, 94, 2, 1735);
+    			attr_dev(span0, "class", "svelte-10nem3j");
+    			add_location(span0, file$4, 95, 2, 1756);
+    			attr_dev(span1, "class", "svelte-10nem3j");
+    			add_location(span1, file$4, 101, 4, 2043);
+    			add_location(br, file$4, 102, 4, 2072);
+    			attr_dev(i, "class", "fad fa-chevron-double-down scrollDown svelte-10nem3j");
+    			add_location(i, file$4, 103, 4, 2083);
     			attr_dev(div, "id", "scrollDownContainer");
-    			attr_dev(div, "class", "svelte-9muntl");
-    			add_location(div, file$4, 88, 2, 1633);
-    			attr_dev(header, "class", "svelte-9muntl");
-    			add_location(header, file$4, 86, 0, 1594);
+    			attr_dev(div, "class", "svelte-10nem3j");
+    			add_location(div, file$4, 100, 2, 1986);
+    			attr_dev(header, "class", "svelte-10nem3j");
+    			add_location(header, file$4, 93, 0, 1724);
     			attr_dev(main, "id", "main");
-    			attr_dev(main, "class", "svelte-9muntl");
-    			add_location(main, file$4, 102, 0, 2026);
+    			attr_dev(main, "class", "svelte-10nem3j");
+    			add_location(main, file$4, 114, 0, 2379);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2228,16 +2568,18 @@ spara alla användare och beställningar.
     			insert_dev(target, header, anchor);
     			append_dev(header, h1);
     			append_dev(header, t1);
+    			append_dev(header, span0);
+    			append_dev(header, t3);
     			append_dev(header, div);
-    			append_dev(div, span);
-    			append_dev(div, t3);
+    			append_dev(div, span1);
+    			append_dev(div, t5);
     			append_dev(div, br);
-    			append_dev(div, t4);
+    			append_dev(div, t6);
     			append_dev(div, i);
-    			insert_dev(target, t5, anchor);
+    			insert_dev(target, t7, anchor);
     			insert_dev(target, main, anchor);
     			if_blocks[current_block_type_index].m(main, null);
-    			insert_dev(target, t6, anchor);
+    			insert_dev(target, t8, anchor);
     			mount_component(contactform, target, anchor);
     			current = true;
 
@@ -2260,10 +2602,10 @@ spara alla användare och beställningar.
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(header);
-    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(t7);
     			if (detaching) detach_dev(main);
     			if_blocks[current_block_type_index].d();
-    			if (detaching) detach_dev(t6);
+    			if (detaching) detach_dev(t8);
     			destroy_component(contactform, detaching);
     			mounted = false;
     			dispose();

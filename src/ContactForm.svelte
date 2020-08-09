@@ -1,4 +1,5 @@
 <script>
+  import { fade } from "svelte/transition";
   let form;
 
   async function sendForm(e) {
@@ -104,7 +105,7 @@
 </style>
 
 {#if window === 0}
-  <div id="formWrapper">
+  <div transition:fade id="formWrapper">
 
     <form action="" class="sheet" bind:this={form} on:submit={sendForm}>
       <h2>Kontakta mig</h2>
@@ -137,7 +138,7 @@
 
   </div>
 {:else if window == 1}
-  <div id="successWindow" class="formResponse">
+  <div transition:fade id="successWindow" class="formResponse">
     <div class="sheet">
       <h2>Tack för ditt meddelande</h2>
       <button on:click={() => (window = 0)}>Skicka ett nytt meddelande</button>
@@ -145,7 +146,7 @@
 
   </div>
 {:else}
-  <div id="failWindow" class="formResponse">
+  <div transition:fade id="failWindow" class="formResponse">
     <div class="sheet">
       <h2>Något gick fel</h2>
       <button>Skapa nytt meddelande</button>

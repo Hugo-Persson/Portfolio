@@ -15,25 +15,25 @@
       ],
       name: "Industri beställning applikation",
       description: `<p>Denna webbapplikationen skapades på uppdrag av en kund, industripogrammet på kattegattgymnasiet, jag jobbade då på
-    detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
-    Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
-    beställningar och hantera dem,
-    varje beställning har en status och kontaktuppgifter som kunden kan se och admins kan uppdatera</p <p>
+      detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
+      Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
+      beställningar och hantera dem,
+      varje beställning har en status och kontaktuppgifter som kunden kan se och admins kan uppdatera</p <p>
 
-Backend är byggt med NodeJS med Express och frontend är byggt med hjälp av Svelte och Bootstrap. För inloggning använder
-jag mig av passwordless istället för
-det normala systemet med ett användarnamn + lösenord. Passwordless bygger på att inga konton har lösenord, istället så
-skickas en verifikations kod till användarna
-när de loggar in. Jag valde passwordless då det skapar större säkerhet för kunden. Jag använde mig av MongoDB för att
-spara alla användare och beställningar.
+      Backend är byggt med NodeJS med Express och frontend är byggt med hjälp av Svelte och Bootstrap. För inloggning använder
+      jag mig av passwordless istället för
+      det normala systemet med ett användarnamn + lösenord. Passwordless bygger på att inga konton har lösenord, istället så
+      skickas en verifikations kod till användarna
+      när de loggar in. Jag valde passwordless då det skapar större säkerhet för kunden. Jag använde mig av MongoDB för att
+      spara alla användare och beställningar.
 
-</p>
-<p>
-    För att se sidan kan ni klicka på live demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
-    skapa ett konto, om ni vill se adminsidan
-    kan ni använda e-mailen "adminSiteDemo@example.com", detta kontot har behöver inte verifieras med en kod för demo
-    verisionen av sidan.
-</p>`,
+      </p>
+      <p>
+          För att se sidan kan ni klicka på live demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
+          skapa ett konto, om ni vill se adminsidan
+          kan ni använda e-mailen "adminSiteDemo@example.com", detta kontot har behöver inte verifieras med en kod för demo
+          verisionen av sidan.
+      </p>`,
       skills: [
         {
           name: "JavaScript",
@@ -67,11 +67,27 @@ spara alla användare och beställningar.
         {
           url: "https://github.com/Hugo-Persson/CrunchyrollPlusXamarin",
           name: "Source code"
+        },
+        {
+          url:
+            "https://drive.google.com/file/d/1XqmtVD6bfMzROGm3Jfsyvl9DcgNA6dmr/view?usp=sharing",
+          name: "Ladda ner APK"
         }
       ],
-      name: "Xamarin forms streaming app",
-      description:
-        "Esse mollit exercitation esse amet nostrud amet ex mollit non. Consequat anim in ex eu laboris et officia.Irure proident nostrud sunt fugiat est officia eu sit mollit. Mollit aliquip ipsum dolor culpa. Occaecat velit proident aliqua culpa eu elit ad velit pariatur aliquip. Elit sint tempor quis reprehenderit magna elit amet aute laboris. In dolore nostrud cupidatat nisi id laboris esse nulla et quis non. Excepteur ullamco quis sint excepteur esse veniam Lorem nisi cupidatat. Sit nostrud adipisicing in cillum velit. Ad ex dolor nostrud mollit. Est dolor amet consequat officia. Eu qui dolore mollit reprehenderit commodo mollit ex dolor tempor sunt proident. Tempor veniam sint nostrud dolore exercitation nostrud est laboris minim quis nulla. Duis anim tempor aute nulla velit duis voluptate voluptate anim sit cupidatat esse cupidatat.",
+      name: "Xamarin forms video streaming app",
+      description: `<p>
+        Detta projektet är en mobil app jag skapade i Xamarin Forms, appen är en streaming app som förmedlar video från
+        Crunchyroll.com API.
+        Jag skapade appen då jag kände att den crunchyroll appen som finns kan förbättras på flera sätt. För att testa appen
+        kan ni ladda ner och installera APK filen
+        eller clona git repositoryt och bygga projektet. Appen fungerar både på Android och IOS men det är inte publicerad
+        på App Store eller Play Store så för att testa
+        appen för IOS måste ni bygga projektet till er IOS enhet.
+
+
+
+
+        </p>`,
       skills: [
         {
           name: "C#",
@@ -80,6 +96,52 @@ spara alla användare och beställningar.
         {
           name: "Xamarin Forms",
           icon: "xamarin_logo.png"
+        }
+      ]
+    },
+    {
+      links: [
+        {
+          url: "https://github.com/Hugo-Persson/OnePaceStreamer",
+          name: "Source code"
+        },
+        {
+          url: "https://one-pace-stream.herokuapp.com/",
+          name: "Live Demo"
+        }
+      ],
+      name: "Torrent streaming applikation",
+      description: `
+        <p>
+            Denna webbapplikationen är gjord för att kunna streama en torrent på ett enkelt sätt. Applikation gör så att
+            användaren inte behöver installera någon torrent programvara
+            så som BitTorrent istället så gör servern det och streamar videon direkt till användaren. Detta gör en stor skillnad
+            på mobila enheter där det kan vara komplicerat
+            att använda torrent program.
+        </p>
+        <p>
+            Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en media spelar så som
+            VLC kan stream direkt. Du skulle även
+            kunna streama median direkt i webbläsaren men filformatet är .mkv vilket webbläsarna inte stödjer.
+
+        </p>`,
+      skills: [
+        {
+          name: "JavaScript",
+          icon: "devicon-javascript-plain colored"
+        },
+        {
+          name: "Svelte",
+          icon: "/svelte.png"
+        },
+
+        {
+          name: "NodeJS",
+          icon: "devicon-nodejs-plain colored"
+        },
+        {
+          name: "Express",
+          icon: "devicon-express-original colored"
         }
       ]
     }
