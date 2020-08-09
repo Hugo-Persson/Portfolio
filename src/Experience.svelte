@@ -48,6 +48,8 @@
         <li>MySQL</li>
         <li>PHP</li>
         <li>Python</li>
+        <li>Git</li>
+        <li>Arbeta med Web API</li>
       </ul>
     </div>
   </div>
