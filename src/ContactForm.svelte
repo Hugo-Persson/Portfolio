@@ -1,5 +1,6 @@
 <script>
-  import { fade } from "svelte/transition";
+  import { fade, slide } from "svelte/transition";
+  import Spinner from "./Spinner.svelte";
   let form;
 
   async function sendForm(e) {
@@ -9,17 +10,21 @@
       const init = {
         method: "GET"
       };
+      loading = true;
       await fetch(
         "https://script.google.com/macros/s/AKfycbwCH_cUwycqejVUST-FoMibz3LrGqukONR56csPTkKlS7tk4r8Y/exec?" +
           new URLSearchParams(new FormData(form)).toString()
       );
+      loading = false;
       window = 1;
     } catch (err) {
+      loading = false;
       console.log(err);
       window = 2;
     }
   }
   let window = 0;
+  let loading = false;
 </script>
 
 <style>
@@ -102,6 +107,12 @@
     width: 96.5%;
     margin: auto;
   }
+  #spinnerWrapper {
+    width: 96.5;
+    margin: auto;
+
+    text-align: left;
+  }
 </style>
 
 {#if window === 0}
@@ -130,9 +141,15 @@
 
         <textarea name="message" id="message" />
       </div>
+
       <div>
         <button type="submit">Skicka</button>
       </div>
+      {#if loading}
+        <div id="spinnerWrapper" transistion:slide>
+          <Spinner />
+        </div>
+      {/if}
 
     </form>
 

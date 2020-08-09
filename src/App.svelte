@@ -1,7 +1,7 @@
 <script>
   export let name;
   import Portfolio from "./Portfolio.svelte";
-  import Skills from "./Skills.svelte";
+  import Experience from "./Experience.svelte";
   import * as animateScroll from "svelte-scrollto";
   import { quadOut } from "svelte/easing";
   import ContactForm from "./ContactForm.svelte";
@@ -114,11 +114,8 @@
 </header>
 <main id="main">
 
-  {#if showPortfolio}
-    <Portfolio />
-  {:else}
-    <Skills />
-  {/if}
+  <Portfolio />
 
 </main>
+<Experience />
 <ContactForm />
