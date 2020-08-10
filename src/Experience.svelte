@@ -38,7 +38,7 @@
     </div>
 
     <div class="sheet">
-      <h2>Kunskaper inom följande tekniker</h2>
+      <h2>Fötrogen med följande tekniker</h2>
       <ul>
         <li>Svelte</li>
         <li>JavaScript</li>
@@ -50,6 +50,7 @@
         <li>Python</li>
         <li>Git</li>
         <li>Arbeta med Web API</li>
+        <li>Wordpress</li>
       </ul>
     </div>
   </div>

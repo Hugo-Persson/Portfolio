@@ -95,9 +95,9 @@
   <h1>Portfolio</h1>
   <span>
     Mitt namn är Hugo Persson och jag har haft programmering som en hobby i
-    flera år samtidigt som jag har studerat på teknik programmet. Jag har
+    flera år samtidigt som jag har studerat på teknikprogrammet. Jag har
     tidigare arbetat mot kund och skapat flera hobbyprojekt. Nedan visar jag
-    några av mina senaste projekt. För live demosidorna kommer första
+    några av mina senaste projekt. För live-demosidorna kommer första
     inladdningen ta längre tid då sidan startas upp på heroku.
   </span>
   <div on:click={scrollDown} id="scrollDownContainer">

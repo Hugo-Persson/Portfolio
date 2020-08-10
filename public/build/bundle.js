@@ -1439,7 +1439,7 @@ var app = (function () {
     				},
     				{
     					url: "https://school-order.herokuapp.com/",
-    					name: "Live Demo"
+    					name: "Live-Demo"
     				}
     			],
     			name: "Industri beställningsapplikation",
@@ -1458,7 +1458,7 @@ var app = (function () {
 
       </p>
       <p>
-          För att se sidan kan ni klicka på live demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
+          För att se sidan kan ni klicka på live-demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
           skapa ett konto, om ni vill se adminsidan
           kan ni använda e-mailen "adminSiteDemo@example.com", detta kontot har behöver inte verifieras med en kod för demo
           verisionen av sidan.
@@ -1531,22 +1531,22 @@ var app = (function () {
     				},
     				{
     					url: "https://one-pace-stream.herokuapp.com/",
-    					name: "Live Demo"
+    					name: "Live-Demo"
     				}
     			],
     			name: "Torrent streaming applikation",
     			description: `
         <p>
             Denna webbapplikation är gjord för att kunna streama en torrent på ett enkelt sätt. Applikationen gör att
-            användaren inte behöver installera någon torrent programvara
+            användaren inte behöver installera någon torrentprogramvara
             så som BitTorrent istället så gör servern det och streamar videon direkt till användaren. Detta gör en stor skillnad
             på mobila enheter där det kan vara komplicerat
             att använda torrentprogram.
         </p>
         <p>
-            Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en media spelar så som
+            Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en mediaspelare så som
             VLC kan stream direkt. Du skulle även
-            kunna streama median direkt i webbläsaren men filformatet är .mkv vilket webbläsarna inte stödjer.
+            kunna streama videon direkt i webbläsaren men filformatet är .mkv vilket webbläsarna inte stödjer.
 
         </p>`,
     			skills: [
@@ -1626,6 +1626,12 @@ var app = (function () {
     	let li6;
     	let t21;
     	let li7;
+    	let t23;
+    	let li8;
+    	let t25;
+    	let li9;
+    	let t27;
+    	let li10;
 
     	const block = {
     		c: function create() {
@@ -1643,7 +1649,7 @@ var app = (function () {
     			t5 = space();
     			div1 = element("div");
     			h21 = element("h2");
-    			h21.textContent = "Kunskaper inom följande tekniker";
+    			h21.textContent = "Fötrogen med följande tekniker";
     			t7 = space();
     			ul = element("ul");
     			li0 = element("li");
@@ -1669,6 +1675,15 @@ var app = (function () {
     			t21 = space();
     			li7 = element("li");
     			li7.textContent = "Python";
+    			t23 = space();
+    			li8 = element("li");
+    			li8.textContent = "Git";
+    			t25 = space();
+    			li9 = element("li");
+    			li9.textContent = "Arbeta med Web API";
+    			t27 = space();
+    			li10 = element("li");
+    			li10.textContent = "Wordpress";
     			attr_dev(h1, "class", "svelte-ephsx5");
     			add_location(h1, file$3, 28, 4, 440);
     			add_location(h20, file$3, 30, 6, 494);
@@ -1676,15 +1691,18 @@ var app = (function () {
     			attr_dev(div0, "class", "sheet svelte-ephsx5");
     			add_location(div0, file$3, 29, 4, 467);
     			add_location(h21, file$3, 40, 6, 789);
-    			add_location(li0, file$3, 42, 8, 852);
-    			add_location(li1, file$3, 43, 8, 877);
-    			add_location(li2, file$3, 44, 8, 906);
-    			add_location(li3, file$3, 45, 8, 930);
-    			add_location(li4, file$3, 46, 8, 965);
-    			add_location(li5, file$3, 47, 8, 991);
-    			add_location(li6, file$3, 48, 8, 1015);
-    			add_location(li7, file$3, 49, 8, 1037);
-    			add_location(ul, file$3, 41, 6, 838);
+    			add_location(li0, file$3, 42, 8, 850);
+    			add_location(li1, file$3, 43, 8, 875);
+    			add_location(li2, file$3, 44, 8, 904);
+    			add_location(li3, file$3, 45, 8, 928);
+    			add_location(li4, file$3, 46, 8, 963);
+    			add_location(li5, file$3, 47, 8, 989);
+    			add_location(li6, file$3, 48, 8, 1013);
+    			add_location(li7, file$3, 49, 8, 1035);
+    			add_location(li8, file$3, 50, 8, 1060);
+    			add_location(li9, file$3, 51, 8, 1082);
+    			add_location(li10, file$3, 52, 8, 1119);
+    			add_location(ul, file$3, 41, 6, 836);
     			attr_dev(div1, "class", "sheet svelte-ephsx5");
     			add_location(div1, file$3, 39, 4, 762);
     			attr_dev(div2, "id", "wrap");
@@ -1726,6 +1744,12 @@ var app = (function () {
     			append_dev(ul, li6);
     			append_dev(ul, t21);
     			append_dev(ul, li7);
+    			append_dev(ul, t23);
+    			append_dev(ul, li8);
+    			append_dev(ul, t25);
+    			append_dev(ul, li9);
+    			append_dev(ul, t27);
+    			append_dev(ul, li10);
     		},
     		p: noop,
     		i: noop,
@@ -2784,7 +2808,7 @@ var app = (function () {
     			h1.textContent = "Portfolio";
     			t1 = space();
     			span0 = element("span");
-    			span0.textContent = "Mitt namn är Hugo Persson och jag har haft programmering som en hobby i\n    flera år samtidigt som jag har studerat på teknik programmet. Jag har\n    tidigare arbetat mot kund och skapat flera hobbyprojekt. Nedan visar jag\n    några av mina senaste projekt. För live demosidorna kommer första\n    inladdningen ta längre tid då sidan startas upp på heroku.";
+    			span0.textContent = "Mitt namn är Hugo Persson och jag har haft programmering som en hobby i\n    flera år samtidigt som jag har studerat på teknikprogrammet. Jag har\n    tidigare arbetat mot kund och skapat flera hobbyprojekt. Nedan visar jag\n    några av mina senaste projekt. För live-demosidorna kommer första\n    inladdningen ta längre tid då sidan startas upp på heroku.";
     			t3 = space();
     			div = element("div");
     			span1 = element("span");
@@ -2805,18 +2829,18 @@ var app = (function () {
     			attr_dev(span0, "class", "svelte-10nem3j");
     			add_location(span0, file$6, 95, 2, 1764);
     			attr_dev(span1, "class", "svelte-10nem3j");
-    			add_location(span1, file$6, 103, 4, 2200);
-    			add_location(br, file$6, 104, 4, 2266);
+    			add_location(span1, file$6, 103, 4, 2199);
+    			add_location(br, file$6, 104, 4, 2265);
     			attr_dev(i, "class", "fad fa-chevron-double-down scrollDown svelte-10nem3j");
-    			add_location(i, file$6, 105, 4, 2277);
+    			add_location(i, file$6, 105, 4, 2276);
     			attr_dev(div, "id", "scrollDownContainer");
     			attr_dev(div, "class", "svelte-10nem3j");
-    			add_location(div, file$6, 102, 2, 2143);
+    			add_location(div, file$6, 102, 2, 2142);
     			attr_dev(header, "class", "svelte-10nem3j");
     			add_location(header, file$6, 93, 0, 1732);
     			attr_dev(main, "id", "main");
     			attr_dev(main, "class", "svelte-10nem3j");
-    			add_location(main, file$6, 116, 0, 2573);
+    			add_location(main, file$6, 116, 0, 2572);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

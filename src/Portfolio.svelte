@@ -10,7 +10,7 @@
         },
         {
           url: "https://school-order.herokuapp.com/",
-          name: "Live Demo"
+          name: "Live-Demo"
         }
       ],
       name: "Industri beställningsapplikation",
@@ -29,7 +29,7 @@
 
       </p>
       <p>
-          För att se sidan kan ni klicka på live demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
+          För att se sidan kan ni klicka på live-demo, för att komma åt kundportalen är det bara att skriva in en e-mail och
           skapa ett konto, om ni vill se adminsidan
           kan ni använda e-mailen "adminSiteDemo@example.com", detta kontot har behöver inte verifieras med en kod för demo
           verisionen av sidan.
@@ -107,22 +107,22 @@
         },
         {
           url: "https://one-pace-stream.herokuapp.com/",
-          name: "Live Demo"
+          name: "Live-Demo"
         }
       ],
       name: "Torrent streaming applikation",
       description: `
         <p>
             Denna webbapplikation är gjord för att kunna streama en torrent på ett enkelt sätt. Applikationen gör att
-            användaren inte behöver installera någon torrent programvara
+            användaren inte behöver installera någon torrentprogramvara
             så som BitTorrent istället så gör servern det och streamar videon direkt till användaren. Detta gör en stor skillnad
             på mobila enheter där det kan vara komplicerat
             att använda torrentprogram.
         </p>
         <p>
-            Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en media spelar så som
+            Programmet använder WebTorrent och NodeJS för att göra om torrenten till en stream som sedan en mediaspelare så som
             VLC kan stream direkt. Du skulle även
-            kunna streama median direkt i webbläsaren men filformatet är .mkv vilket webbläsarna inte stödjer.
+            kunna streama videon direkt i webbläsaren men filformatet är .mkv vilket webbläsarna inte stödjer.
 
         </p>`,
       skills: [
