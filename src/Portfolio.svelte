@@ -14,8 +14,8 @@
         }
       ],
       name: "Industri beställningsapplikation",
-      description: `<p>Denna webbapplikationen skapades på uppdrag av en kund, industripogrammet på kattegattgymnasiet, jag jobbade då på
-      detta projektet mot dem under mitt tredje år på kattegattgymnasiet.
+      description: `<p>Denna webbapplikationen skapades på uppdrag av en kund, industripogrammet på Kattegattgymnasiet, jag jobbade då på
+      detta projektet mot dem under mitt tredje år på Kattegattgymnasiet.
       Applikationen hanterar beställningar som kunder skickar till industriprogrammet. Admins kan sortera alla
       beställningar och hantera dem,
       varje beställning har en status och kontaktuppgifter som kunden kan se och admins kan uppdatera</p <p>
