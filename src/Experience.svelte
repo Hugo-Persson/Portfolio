@@ -41,8 +41,9 @@
       <h2>Fötrogen med följande tekniker</h2>
       <ul>
         <li>Svelte</li>
-        <li>JavaScript</li>
         <li>React</li>
+        <li>JavaScript</li>
+        <li>Bootstrap</li>
         <li>C# - .NET miljön</li>
         <li>MongoDB</li>
         <li>MySQL</li>
@@ -51,6 +52,9 @@
         <li>Git</li>
         <li>Arbeta med Web API</li>
         <li>Wordpress</li>
+        <li>Xamarin Forms</li>
+        <li>Android Studio</li>
+        <li>Kunskap inom Linux</li>
       </ul>
     </div>
   </div>
